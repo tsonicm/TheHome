@@ -15,8 +15,7 @@ export default function Home() {
         />
         <h1 class="text-4xl font-bold">Welcome to Fresh</h1>
         <p class="my-4">
-          Try updating this message in the
-          <code class="mx-2">./routes/index.tsx</code> file, and refresh.
+          For now, this is just a placeholder page. But it's a good start! 🚀
         </p>
         <Counter count={count} />
       </div>
