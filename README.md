@@ -14,3 +14,6 @@ deno task start
 ```
 
 This will watch the project directory and restart as necessary.
+
+### Public Link
+The concept app will always be accessible at: `https://ika-the-home.deno.dev/`
