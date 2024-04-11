@@ -13,7 +13,7 @@ export function Slider({ startValue, sliderValueChange }: props) {
         sliderValueChange && sliderValueChange(parseInt(target.value));
     }
     return (
-    <div class="relative flex h-[32px] w-[320px] bg-black left-0 right-0 mx-auto rounded-lg outline outline-4">
+    <div class="relative flex h-[32px] w-full bg-black left-0 right-0 mx-auto rounded-lg outline outline-4">
         <div
         class="absolute h-[32px] bg-white rounded-lg"
         style={{ width: `${value}%` }}

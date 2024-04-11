@@ -16,5 +16,9 @@
   },
   "css.customData": [
     ".vscode/tailwind.json"
+  ],
+  "cSpell.words": [
+    "preact",
+    "tailwindcss"
   ]
 }
