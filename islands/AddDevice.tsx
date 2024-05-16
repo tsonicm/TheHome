@@ -24,7 +24,7 @@ export default function AddDevice({ isHidden, toggleAddDevice }: IAddDevice) {
     >
       <div class="bg-gray-500 absolute top-0 left-0 bottom-0 right-0 m-auto h-[350px] w-[250px] rounded-lg">
         <p
-          class="absolute text-sm text-white hover:text-red-600 p-2 text-center top-1 right-1"
+          class="absolute text-sm text-white hover:text-red-600 cursor-pointer p-2 text-center top-1 right-1"
           onClick={() => {
             const deviceName = document.getElementById("deviceName") as HTMLInputElement;
             const deviceType = document.getElementById("deviceType") as HTMLSelectElement;
