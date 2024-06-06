@@ -8,8 +8,10 @@ import * as $api_joke from "./routes/api/joke.ts";
 import * as $automate from "./routes/automate.tsx";
 import * as $index from "./routes/index.tsx";
 import * as $AddDevice from "./islands/AddDevice.tsx";
-import * as $AddDeviceCard from "./islands/AddDeviceCard.tsx";
+import * as $AddEditCard from "./islands/AddEditCard.tsx";
 import * as $Automation from "./islands/Automation.tsx";
+import * as $AutomationCard from "./islands/AutomationCard.tsx";
+import * as $AutomationDetails from "./islands/AutomationDetails.tsx";
 import * as $Card from "./islands/Card.tsx";
 import * as $Counter from "./islands/Counter.tsx";
 import * as $Home from "./islands/Home.tsx";
@@ -26,8 +28,10 @@ const manifest = {
   },
   islands: {
     "./islands/AddDevice.tsx": $AddDevice,
-    "./islands/AddDeviceCard.tsx": $AddDeviceCard,
+    "./islands/AddEditCard.tsx": $AddEditCard,
     "./islands/Automation.tsx": $Automation,
+    "./islands/AutomationCard.tsx": $AutomationCard,
+    "./islands/AutomationDetails.tsx": $AutomationDetails,
     "./islands/Card.tsx": $Card,
     "./islands/Counter.tsx": $Counter,
     "./islands/Home.tsx": $Home,

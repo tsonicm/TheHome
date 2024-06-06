@@ -14,7 +14,7 @@ export default function AddDevice(
   return (
     <div
       className={classNames(
-        "bg-gray-500/80 absolute top-0 left-0 bottom-0 right-0 m-auto h-dvh w-dvw rounded-lg backdrop-blur-sm",
+        "bg-gray-500/80 absolute top-0 left-0 bottom-0 right-0 m-auto h-dvh w-dvw backdrop-blur-sm",
         { hidden: isHidden },
       )}
     >
