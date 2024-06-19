@@ -4,9 +4,11 @@ import { IDeviceProps } from "./Home.tsx";
 import automations from "../utils/mock/automations.js";
 import AutomationCard from "./AutomationCard.tsx";
 import AddEditCard from "./AddEditCard.tsx";
+import AddAutomation from "./AddAutomation.tsx";
 import { useState } from "preact/hooks";
 import IconX from "https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/x.tsx";
 import AutomationDetails from "./AutomationDetails.tsx";
+import InitialDevices from "../utils/mock/devices.js";
 
 export interface IDeviceCondition {
   device: IDeviceProps;
@@ -28,7 +30,7 @@ export interface IAutomation {
   id: string;
   devices: IDeviceAutomationDetails[];
   startTime: string;
-  endTime: string;
+  endTime?: string;
   days: string[];
 }
 
@@ -36,9 +38,10 @@ export default function Automation() {
   const automationsList = automations as IAutomation[];
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDetailsHidden, setIsDetailsHidden] = useState(true);
-  const [showAddAutomation, setShowAddAutomation] = useState(false);
+  const [isAddAutomationHidden, setIsAddAutomationHidden] = useState(true);
   const toggleEditMode = () => setIsEditMode(!isEditMode);
-  const toggleAddAutomation = () => setShowAddAutomation(!showAddAutomation);
+  const toggleAddAutomation = () =>
+    setIsAddAutomationHidden(!isAddAutomationHidden);
   const [selectedAutomation, setSelectedAutomation] = useState(
     automationsList[0],
   );
@@ -46,6 +49,10 @@ export default function Automation() {
   const handleDetails = (automation: IAutomation) => {
     setSelectedAutomation(automation);
     setIsDetailsHidden(false);
+  };
+
+  const addAutomation = (automation: IAutomation) => {
+    automationsList.push(automation);
   };
 
   return (
@@ -68,6 +75,12 @@ export default function Automation() {
         automation={selectedAutomation}
         isHidden={isDetailsHidden}
         hideDetails={() => setIsDetailsHidden(true)}
+      />
+      <AddAutomation
+        isHidden={isAddAutomationHidden}
+        toggleAddAutomation={toggleAddAutomation}
+        addAutomation={addAutomation}
+        deviceList={InitialDevices}
       />
       <Navbar currentPage="/automate" />
     </div>

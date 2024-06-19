@@ -14,8 +14,7 @@ function DeviceConditions(conditions: IDeviceCondition[] | null) {
   }
   return conditions?.map((condition) => (
     <p class="text-sm">
-      {condition.device.name} {condition.property} {condition.comparison}{" "}
-      {condition.value}
+      {condition.device.name} {condition.comparison} {condition.value}
     </p>
   ));
 }
@@ -46,30 +45,26 @@ export default function AutomationDetails(
               {new Date(props.automation.startTime).toLocaleTimeString(
                 "en-US",
                 { hour: "2-digit", minute: "2-digit", hour12: false },
-              )} -{" "}
-              {new Date(props.automation.endTime).toLocaleTimeString("en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false,
-              })}
+              )}
+              {" - "}
+              {props.automation.endTime &&
+                new Date(props.automation.endTime).toLocaleTimeString("en-US", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: false,
+                })}
             </p>
             <p class="text-2xl">{props.automation.days.join(", ")}</p>
           </div>
           <p class="text-2xl">Devices</p>
           <hr class="border-1 border-black py-4" />
-          <div class="flex flex-col gap-2">
+          <div class="flex flex-row gap-2">
             {props.automation.devices.map((device) => (
-              <div class="flex flex-col gap-2">
+              <div class="flex flex-col gap-2 border-2 border-black rounded-md p-4">
                 <p class="text-lg">{device.device.name}</p>
-                {device.conditions && (
-                  <div class="flex flex-col gap-2">
-                    <p class="text-sm">- Conditions -</p>
-                    {DeviceConditions(device.conditions)}
-                  </div>
-                )}
                 {device.propertiesToModify && (
                   <div class="flex flex-col gap-2">
-                    <p class="text-sm">- State -</p>
+                    <p class="text-sm text-center">- State -</p>
                     <div class="flex flex-col gap-2">
                       {Object.entries(device.propertiesToModify).map(
                         ([key, value]) => (
@@ -79,6 +74,12 @@ export default function AutomationDetails(
                         ),
                       )}
                     </div>
+                  </div>
+                )}
+                {device.conditions && (
+                  <div class="flex flex-col gap-2">
+                    <p class="text-sm text-center">- Conditions -</p>
+                    {DeviceConditions(device.conditions)}
                   </div>
                 )}
               </div>

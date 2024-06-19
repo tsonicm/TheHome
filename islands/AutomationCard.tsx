@@ -42,12 +42,12 @@ export default function AutomationCard(
             hour: "2-digit",
             minute: "2-digit",
             hour12: false,
-          })} -{" "}
-          {new Date(props.automation.endTime).toLocaleTimeString("en-US", {
-            hour: "2-digit",
-            minute: "2-digit",
-            hour12: false,
-          })}
+          })} - {props.automation.endTime &&
+            new Date(props.automation.endTime).toLocaleTimeString("en-US", {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: false,
+            })}
         </p>
         <p class="text-lg">{props.automation.days.join(", ")}</p>
       </div>
