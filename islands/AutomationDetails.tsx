@@ -46,13 +46,13 @@ export default function AutomationDetails(
                 "en-US",
                 { hour: "2-digit", minute: "2-digit", hour12: false },
               )}
-              {" - "}
+
               {props.automation.endTime &&
-                new Date(props.automation.endTime).toLocaleTimeString("en-US", {
+                ` - ${new Date(props.automation.endTime).toLocaleTimeString("en-US", {
                   hour: "2-digit",
                   minute: "2-digit",
                   hour12: false,
-                })}
+                })}`}
             </p>
             <p class="text-2xl">{props.automation.days.join(", ")}</p>
           </div>

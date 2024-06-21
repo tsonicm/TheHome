@@ -22,20 +22,20 @@ export interface IDeviceAutomationDetails {
   device: IDeviceProps;
   conditions: IDeviceCondition[] | null;
   propertiesToModify: object;
-  originalProperties: object;
+  originalProperties: object | null;
 }
 
 export interface IAutomation {
   name: string;
   id: string;
   devices: IDeviceAutomationDetails[];
-  startTime: string;
-  endTime?: string;
+  startTime: string | number;
+  endTime?: string | number;
   days: string[];
 }
 
 export default function Automation() {
-  const automationsList = automations as IAutomation[];
+  const [automationsList, setAutomationList] = useState(automations as IAutomation[]);
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDetailsHidden, setIsDetailsHidden] = useState(true);
   const [isAddAutomationHidden, setIsAddAutomationHidden] = useState(true);
@@ -52,7 +52,7 @@ export default function Automation() {
   };
 
   const addAutomation = (automation: IAutomation) => {
-    automationsList.push(automation);
+    setAutomationList([...automationsList, automation]);
   };
 
   return (
