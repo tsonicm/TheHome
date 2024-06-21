@@ -3,6 +3,8 @@ import { useState } from "preact/hooks";
 import { IAutomation } from "./Automation.tsx";
 import { IDeviceProps } from "./Home.tsx";
 import IconX from "https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/x.tsx";
+import TimePicker from "../components/TimePicker.tsx";
+import DevicePicker from "../components/DevicePicker.tsx";
 
 interface IAddAutomation {
     isHidden: boolean;
@@ -114,6 +116,26 @@ export default function AddAutomation(
         IAddAutomation,
 ) {
     const [days, setDays] = useState<string[]>([]);
+    const [startTime, setStartTime] = useState<string>("");
+    const [endTime, setEndTime] = useState<string>("");
+    const [automationDevices, setAutomationDevices] = useState<IDeviceProps[]>(
+        [],
+    );
+
+    const addDeviceToAutomation = (device: IDeviceProps) => {
+        console.log(device);
+        setAutomationDevices([...automationDevices, device]);
+    };
+
+    const handleSetStartTime = (e: Event) => {
+        const target = e.target as HTMLInputElement;
+        setStartTime(target.value);
+    };
+
+    const handleSetEndTime = (e: Event) => {
+        const target = e.target as HTMLInputElement;
+        setEndTime(target.value);
+    };
 
     return (
         <div
@@ -122,7 +144,7 @@ export default function AddAutomation(
                 { hidden: isHidden },
             )}
         >
-            <div class="bg-white/60 absolute top-0 left-0 bottom-0 right-0 m-auto h-[500px] w-[400px] rounded-lg">
+            <div class="bg-white/60 absolute top-0 left-0 bottom-0 right-0 m-auto h-[600px] w-[400px] rounded-lg p-4">
                 <IconX
                     class="absolute text-black hover:text-red-600 cursor-pointer top-1 right-1 w-5 h-5"
                     onClick={() => {
@@ -138,7 +160,7 @@ export default function AddAutomation(
                         toggleAddAutomation();
                     }}
                 />
-                <div class="flex flex-col p-4 left-0 right-0 mx-auto w-full h-full">
+                <div class="flex flex-col left-0 right-0 mx-auto w-full h-full">
                     <p class="text-4xl text-black p-4 text-center">
                         New Automation
                     </p>
@@ -149,43 +171,70 @@ export default function AddAutomation(
                         id={"automationName"}
                     />
                     <div class="flex flex-row justify-evenly">
-                        <p>Start time</p>
-                        <p>End time</p>
+                        <TimePicker
+                            id={"startTime"}
+                            onChange={handleSetStartTime}
+                        />
+                        <p class="self-center">-</p>
+                        <TimePicker
+                            id={"endTime"}
+                            onChange={handleSetEndTime}
+                        />
                     </div>
                     <DayPicker days={days} setDays={setDays} />
-                    <label for="deviceType">Device</label>
-                    <select
-                        class="h-[30px] w-full p-4"
-                        id={"device"}
-                    >
-                        {deviceList.map((device) => (
-                            <option value={device.id}>{device.name}</option>
-                        ))}
-                    </select>
-                    <button
-                        class="bg-white outline outline-1 outline-black rounded-lg mt-4"
-                        onClick={() => {
-                            const automationName = document.getElementById(
-                                "automationName",
-                            ) as HTMLInputElement;
-
-                            if (!automationName.value) {
-                                alert("Please fill out all fields");
-                            } else {
-                                console.log({
-                                    id: Math.random().toString(36).substring(7),
-                                    name: automationName.value,
-                                    devices: [],
-                                    startTime: "PLACEHOLDER",
-                                    endTime: "PLACEHOLDER",
-                                    days: days,
-                                });
-                            }
-                        }}
-                    >
-                        Add Automation
-                    </button>
+                    {
+                        /*Custom component for device picker here
+                            Dropdown fordevice type
+                            Populate fields with device props
+                            Let user select which fields to use */
+                    }
+                    <DevicePicker
+                        devices={deviceList}
+                        addDevice={addDeviceToAutomation}
+                        addedDevices={automationDevices}
+                    />
+                    {
+                        /* Custom component for condition picker here
+                            Dropdown for condition type (e.g. <, />, =)
+                            Input for condition value
+                            Validation for input type (color, number)
+                            Device picker for device to apply condition to
+                            Field for choosing whether condition is tied to other conditions (AND, OR, NOT)
+                        */
+                    }
                 </div>
+                <button
+                    class={classNames(
+                        "transition-colors rounded-lg outline outline-1 outline-black absolute bottom-4 left-0 right-0 mx-auto w-9/12",
+                        {
+                            "bg-gray-200": days.length === 0,
+                            "bg-green-500 hover:bg-green-700 text-white":
+                                days.length > 0,
+                        },
+                    )}
+                    disabled={days.length === 0 ? true : false}
+                    onClick={() => {
+                        const automationName = document.getElementById(
+                            "automationName",
+                        ) as HTMLInputElement;
+
+                        if (!automationName.value) {
+                            alert("Please fill out all fields");
+                        } else {
+                            console.log({
+                                id: (Math.random() * 1000).toString(36)
+                                    .substring(7),
+                                name: automationName.value,
+                                devices: [],
+                                startTime: startTime,
+                                endTime: endTime,
+                                days: days,
+                            });
+                        }
+                    }}
+                >
+                    Add Automation
+                </button>
             </div>
         </div>
     );
