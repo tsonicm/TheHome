@@ -8,6 +8,8 @@ interface IAddDevice {
   addDevice: (device: IDeviceProps) => void;
 }
 
+const url = "localhost:8001";
+
 export default function AddDevice(
   { isHidden, toggleAddDevice, addDevice }: IAddDevice,
 ) {
@@ -18,7 +20,7 @@ export default function AddDevice(
         { hidden: isHidden },
       )}
     >
-      <div class="bg-white/60 absolute top-0 left-0 bottom-0 right-0 m-auto h-[350px] w-[250px] rounded-lg">
+      <div class="bg-white/60 absolute top-0 left-0 bottom-0 right-0 m-auto h-[350px] w-[300px] rounded-lg">
         <IconX
           class="absolute text-black hover:text-red-600 cursor-pointer top-1 right-1 w-5 h-5"
           onClick={() => {
@@ -28,9 +30,13 @@ export default function AddDevice(
             const deviceType = document.getElementById(
               "deviceType",
             ) as HTMLSelectElement;
+            const manufacturer = document.getElementById(
+              "manufacturer",
+            ) as HTMLSelectElement;
 
             deviceName.value = "";
             deviceType.value = "colorLightBulb";
+            manufacturer.value = "Phillips";
 
             toggleAddDevice();
           }}
@@ -44,7 +50,7 @@ export default function AddDevice(
             id={"deviceName"}
           />
           <select
-            class="h-[30px] w-full p-4"
+            class="h-[30px] w-full p-4 text-black"
             id={"deviceType"}
           >
             <option value="colorLightBulb">Color Light Bulb</option>
@@ -53,14 +59,25 @@ export default function AddDevice(
             <option value="slider">Slider</option>
             <option value="other">Other</option>
           </select>
+          <select
+            class="h-[30px] w-full p-4 text-black mt-4"
+            id={"manufacturer"}
+          >
+            <option value={url}>Phillips</option>
+            <option value={url}>Tapo</option>
+            <option value={url}>YeeLight</option>
+          </select>
           <button
-            class="bg-white outline outline-1 outline-black rounded-lg mt-4"
+            class="bg-white outline outline-1 outline-black rounded-lg absolute bottom-4 w-11/12 self-center"
             onClick={() => {
               const deviceName = document.getElementById(
                 "deviceName",
               ) as HTMLInputElement;
               const deviceType = document.getElementById(
                 "deviceType",
+              ) as HTMLSelectElement;
+              const manufacturer = document.getElementById(
+                "manufacturer",
               ) as HTMLSelectElement;
 
               if (!deviceName.value) {
@@ -78,6 +95,7 @@ export default function AddDevice(
                     ? "#fff1e0"
                     : undefined,
                   on: true,
+                  endpoint: manufacturer.value,
                 });
                 deviceName.value = "";
                 deviceType.value = "colorLightBulb";

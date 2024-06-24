@@ -1,11 +1,11 @@
 import classNames from "classnames";
 import { useState } from "preact/hooks";
-import { IAutomation } from "./Automation.tsx";
+import { IAutomation, IDeviceCondition } from "./Automation.tsx";
 import { IDeviceProps } from "./Home.tsx";
 import IconX from "https://deno.land/x/tabler_icons_tsx@0.0.5/tsx/x.tsx";
 import TimePicker from "../components/TimePicker.tsx";
-import DevicePicker from "../components/DevicePicker.tsx";
 import Card from "./Card.tsx";
+import ConditionPicker from "../components/ConditionPicker.tsx";
 
 interface IAddAutomation {
     isHidden: boolean;
@@ -112,14 +112,25 @@ function DayPicker(props: IDayPickerProps) {
     );
 }
 
-function AddedDevices({ devices }: { devices: IDeviceProps[] }) {
+function AddedDevices(props: {
+    devices: IDeviceProps[];
+    editDevice: (device: IDeviceProps) => void;
+    removeDevice: (device: IDeviceProps) => void;
+}) {
     return (
-        <div class="w-[350px] border-l border-black p-4 pt-5 overflow-auto">
-            {devices.map((device) => (
-                <Card device={device} editMode={false} editDevice={() => {}}/>
+        <div class="w-[400px] border-l border-black px-4 pb-4 mt-6 overflow-auto">
+            {props.devices.map((device) => (
+                <div class="mb-4">
+                    <Card
+                        device={device}
+                        editMode={true}
+                        removeDevice={props.removeDevice}
+                        editDevice={props.editDevice}
+                    />
+                </div>
             ))}
         </div>
-    )
+    );
 }
 
 export default function AddAutomation(
@@ -132,9 +143,55 @@ export default function AddAutomation(
     const [automationDevices, setAutomationDevices] = useState<IDeviceProps[]>(
         [],
     );
+    const [automationConditions, setAutomationConditions] = useState<
+        IDeviceCondition[]
+    >([]);
+    const isAddDisabled = !(
+        startTime && days.length && automationDevices.length
+    );
+
+    const handleChangeDeviceProps = (device: IDeviceProps) => {
+        setAutomationDevices(
+            automationDevices.map((automationDevice) => {
+                if (automationDevice.id === device.id) {
+                    return device;
+                }
+                return automationDevice;
+            }),
+        );
+    };
 
     const addDeviceToAutomation = (device: IDeviceProps) => {
+        if (
+            automationDevices.some((automationDevice) =>
+                automationDevice.id === device.id
+            )
+        ) {
+            alert("Device already added");
+            return;
+        }
         setAutomationDevices([...automationDevices, device]);
+    };
+
+    const addConditionsToAutomation = (conditions: IDeviceCondition[]) => {
+        setAutomationConditions(conditions);
+    };
+
+    const handleRemoveDevice = (device: IDeviceProps) => {
+        if (device.remove) {
+            setAutomationDevices(
+                automationDevices.filter((el) => el.id !== device.id),
+            );
+        } else {
+            setAutomationDevices(
+                automationDevices.map((el) => {
+                    if (el.id === device.id) {
+                        return device;
+                    }
+                    return el;
+                }),
+            );
+        }
     };
 
     const handleSetStartTime = (e: Event) => {
@@ -167,7 +224,6 @@ export default function AddAutomation(
                         device: deviceList.filter((initDevice) =>
                             initDevice.id === device.id
                         )[0],
-                        conditions: null,
                         propertiesToModify: {
                             percentage: device.percentage,
                             color: device.color,
@@ -176,6 +232,7 @@ export default function AddAutomation(
                         originalProperties: null,
                     };
                 }),
+                conditions: automationConditions,
                 startTime: new Date().setHours(
                     parseInt(startTime.split(":")[0]),
                     parseInt(startTime.split(":")[1]),
@@ -187,8 +244,6 @@ export default function AddAutomation(
                     ),
                 days: days,
             };
-            console.log(startTime, endTime);
-            console.log(automation);
             addAutomation(automation);
             toggleAddAutomation();
         }
@@ -201,9 +256,9 @@ export default function AddAutomation(
                 { hidden: isHidden },
             )}
         >
-            <div class="bg-white/60 absolute top-0 left-0 bottom-0 right-0 m-auto h-[600px] w-[750px] rounded-lg">
-                <div class="flex flex-row h-[545px] border-b border-black">
-                    <div class="w-[400px] p-4">
+            <div class="bg-white/60 absolute top-0 left-0 bottom-0 right-0 m-auto h-[700px] w-[1000px] rounded-lg">
+                <div class="flex flex-row max-h-[645px] h-[645px] border-b border-black">
+                    <div class="w-[600px] p-4">
                         <IconX
                             class="absolute text-black hover:text-red-600 cursor-pointer top-1 right-1 w-5 h-5"
                             onClick={() => {
@@ -214,6 +269,7 @@ export default function AddAutomation(
                                     startTime: "",
                                     endTime: "",
                                     days: [],
+                                    conditions: [],
                                 };
                                 console.log(automation);
                                 toggleAddAutomation();
@@ -223,12 +279,14 @@ export default function AddAutomation(
                             <p class="text-4xl text-black p-4 text-center">
                                 New Automation
                             </p>
+                            <hr class="border-black" />
                             <input
                                 class="h-[30px] w-full p-4 my-4"
                                 type="text"
                                 placeholder="Automation name"
                                 id={"automationName"}
                             />
+                            <hr class="border-black mb-4" />
                             <div class="flex flex-row justify-evenly">
                                 <TimePicker
                                     id={"startTime"}
@@ -240,17 +298,34 @@ export default function AddAutomation(
                                     onChange={handleSetEndTime}
                                 />
                             </div>
+                            <hr class="border-black mt-4 mb-2" />
                             <DayPicker days={days} setDays={setDays} />
-                            {
-                                /*Custom component for device picker here
-                            Dropdown fordevice type
-                            Populate fields with device props
-                            Let user select which fields to use */
-                            }
-                            <DevicePicker
+                            <hr class="border-black my-4" />
+                            <select class="px-2 py-1 border-gray-500 border-2 rounded bg-white hover:bg-gray-200 transition-colors">
+                                {deviceList.map((device) => (
+                                    <option value={device.id}>
+                                        {device.name}
+                                    </option>
+                                ))}
+                            </select>
+                            <button
+                                class="bg-white hover:bg-gray-200 transition-colors rounded-lg my-4 outline outline-1 outline-black"
+                                onClick={() => {
+                                    const selectedDevice = deviceList.filter(
+                                        (device) =>
+                                            device.id ===
+                                                (document.querySelector(
+                                                    "select",
+                                                ) as HTMLSelectElement).value,
+                                    )[0];
+                                    addDeviceToAutomation(selectedDevice);
+                                }}
+                            >
+                                Add Device
+                            </button>
+                            <ConditionPicker
                                 devices={deviceList}
-                                addDevice={addDeviceToAutomation}
-                                addedDevices={automationDevices}
+                                addConditions={addConditionsToAutomation}
                             />
                             {
                                 /* Custom component for condition picker here
@@ -263,18 +338,22 @@ export default function AddAutomation(
                             }
                         </div>
                     </div>
-                    <AddedDevices devices={automationDevices} />
+                    <AddedDevices
+                        devices={automationDevices}
+                        editDevice={handleChangeDeviceProps}
+                        removeDevice={handleRemoveDevice}
+                    />
                 </div>
                 <button
                     class={classNames(
                         "transition-colors rounded-lg outline outline-1 outline-black absolute bottom-4 left-0 right-0 mx-auto w-11/12",
                         {
-                            "bg-gray-200": days.length === 0,
+                            "bg-gray-200": isAddDisabled,
                             "bg-green-500 hover:bg-green-700 text-white":
-                                days.length > 0,
+                                !isAddDisabled,
                         },
                     )}
-                    disabled={days.length === 0 ? true : false}
+                    disabled={isAddDisabled}
                     onClick={handleAddAutomation}
                 >
                     Add Automation

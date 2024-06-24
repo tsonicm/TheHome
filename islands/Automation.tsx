@@ -11,16 +11,16 @@ import AutomationDetails from "./AutomationDetails.tsx";
 import InitialDevices from "../utils/mock/devices.js";
 
 export interface IDeviceCondition {
+  id: number;
   device: IDeviceProps;
   property: string;
-  comparison: ">" | "<" | "=" | "!=";
+  comparison: string;
   value: string;
-  setAndOr: boolean | null;
+  setAndOr: "AND" | "OR" | null;
 }
 
 export interface IDeviceAutomationDetails {
   device: IDeviceProps;
-  conditions: IDeviceCondition[] | null;
   propertiesToModify: object;
   originalProperties: object | null;
 }
@@ -29,13 +29,16 @@ export interface IAutomation {
   name: string;
   id: string;
   devices: IDeviceAutomationDetails[];
+  conditions: IDeviceCondition[] | null;
   startTime: string | number;
   endTime?: string | number;
   days: string[];
 }
 
 export default function Automation() {
-  const [automationsList, setAutomationList] = useState(automations as IAutomation[]);
+  const [automationsList, setAutomationList] = useState(
+    automations as IAutomation[],
+  );
   const [isEditMode, setIsEditMode] = useState(false);
   const [isDetailsHidden, setIsDetailsHidden] = useState(true);
   const [isAddAutomationHidden, setIsAddAutomationHidden] = useState(true);

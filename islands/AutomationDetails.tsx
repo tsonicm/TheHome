@@ -48,11 +48,16 @@ export default function AutomationDetails(
               )}
 
               {props.automation.endTime &&
-                ` - ${new Date(props.automation.endTime).toLocaleTimeString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: false,
-                })}`}
+                ` - ${
+                  new Date(props.automation.endTime).toLocaleTimeString(
+                    "en-US",
+                    {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: false,
+                    },
+                  )
+                }`}
             </p>
             <p class="text-2xl">{props.automation.days.join(", ")}</p>
           </div>
@@ -67,24 +72,30 @@ export default function AutomationDetails(
                     <p class="text-sm text-center">- State -</p>
                     <div class="flex flex-col gap-2">
                       {Object.entries(device.propertiesToModify).map(
-                        ([key, value]) => (
-                          <p class="text-sm">
-                            {key}: {value.toString()}
-                          </p>
-                        ),
+                        ([key, value]) => {
+                          if (value === undefined) {
+                            return <></>;
+                          }
+                          return (
+                            <p class="text-sm">
+                              {key}: {value.toString()}
+                            </p>
+                          );
+                        },
                       )}
                     </div>
-                  </div>
-                )}
-                {device.conditions && (
-                  <div class="flex flex-col gap-2">
-                    <p class="text-sm text-center">- Conditions -</p>
-                    {DeviceConditions(device.conditions)}
                   </div>
                 )}
               </div>
             ))}
           </div>
+          {props.automation.conditions && (
+            <div class="flex flex-col gap-2">
+              <p class="text-2xl">Conditions</p>
+              <hr class="border-1 border-black" />
+              {DeviceConditions(props.automation.conditions)}
+            </div>
+          )}
         </div>
       </div>
     </div>

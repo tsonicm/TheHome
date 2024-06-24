@@ -6,6 +6,7 @@ const InitialDevices = [
     percentage: 5,
     color: "#FFDAE9",
     on: true,
+    endpoint: "localhost:8001",
   },
   {
     type: "colorLightBulb",
@@ -14,6 +15,7 @@ const InitialDevices = [
     percentage: 80,
     color: "#DFEAFF",
     on: true,
+    endpoint: "localhost:8001",
   },
   { type: "switch", id: "8", name: "Basement", on: false },
   {
@@ -23,6 +25,7 @@ const InitialDevices = [
     percentage: 50,
     color: "#FFF",
     on: false,
+    endpoint: "localhost:8001",
   },
   { type: "lightBulb", id: "4", name: "Bathroom", percentage: 100, on: true },
   { type: "lightBulb", id: "5", name: "Porch", percentage: 20, on: false },
@@ -35,6 +38,7 @@ const InitialDevices = [
     percentage: 100,
     color: "purple",
     on: true,
+    endpoint: "localhost:8001",
   },
 ];
 

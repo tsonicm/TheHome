@@ -12,19 +12,8 @@ export interface IDeviceProps {
   percentage?: number;
   color?: string;
   on?: boolean;
-  field1?: {
-    name: string;
-    value: string;
-  };
-  field2?: {
-    name: string;
-    value: string;
-  };
-  field3?: {
-    name: string;
-    value: string;
-  };
   remove?: boolean;
+  endpoint?: string;
 }
 
 export default function Home() {
@@ -34,6 +23,7 @@ export default function Home() {
 
   const toggleAddDevice = () => setIsHidden(!isHidden);
   const toggleEditDevice = () => setIsEditMode(!isEditMode);
+
   const editDevice = (device: IDeviceProps) => {
     if (device.remove) {
       setDevices(Devices.filter((el) => el.id !== device.id));
@@ -64,7 +54,7 @@ export default function Home() {
             <Card
               device={element}
               editMode={isEditMode}
-              editDevice={editDevice}
+              removeDevice={editDevice}
             />
           );
         })}
