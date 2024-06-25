@@ -33,7 +33,7 @@ const getDevices = async (ctx) => {
     try {
         const allDevices = await devices.find();
         ctx.response.status = 200;
-        ctx.response.body = { data: allDevices };
+        ctx.response.body = { allDevices };
     } catch (error) {
         ctx.response.status = 500;
         ctx.response.body = { error: error.message, fullError: error };
@@ -55,7 +55,7 @@ const getDevice = async (ctx) => {
         }
 
         ctx.response.status = 200;
-        ctx.response.body = { data: device };
+        ctx.response.body = { device };
     } catch (error) {
         ctx.response.status = 500;
         ctx.response.body = { error: error.message, fullError: error };

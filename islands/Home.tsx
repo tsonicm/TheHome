@@ -4,6 +4,7 @@ import AddDevice from "./AddDevice.tsx";
 import AddEditCard from "./AddEditCard.tsx";
 import Card from "./Card.tsx";
 import InitialDevices from "../utils/mock/devices.js";
+import { getDevices } from "../routes/api/getDevices.ts";
 
 export interface IDeviceProps {
   id: string;
@@ -38,9 +39,11 @@ export default function Home() {
       );
     }
   };
+
   const addDevice = (device: IDeviceProps) => {
     Devices.push(device);
   };
+
   return (
     <div class="bg-gradient-to-tr from-slate-300 to-slate-800 h-dvh w-dvw p-4">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 min-[1919px]:grid-cols-5 min-[2304px]:grid-cols-6 gap-4 pb-[80px]">

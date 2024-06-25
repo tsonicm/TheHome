@@ -37,6 +37,7 @@ const ConditionValuePicker = (
                 <input
                     type="number"
                     class="px-2 py-1 w-[70px] border-gray-500 border-2 rounded-lg bg-white hover:bg-gray-200 transition-colors"
+                    defaultValue="0"
                     onChange={setSelectedValue}
                 />
             );
@@ -45,6 +46,7 @@ const ConditionValuePicker = (
                 <select
                     class="px-2 py-1 w-[70px] border-gray-500 border-2 rounded-lg bg-white hover:bg-gray-200 transition-colors"
                     onChange={setSelectedValue}
+                    defaultValue={"true"}
                 >
                     <option value="true">On</option>
                     <option value="false">Off</option>
@@ -56,6 +58,7 @@ const ConditionValuePicker = (
                     type="color"
                     class="px-2 py-1 w-[70px] h-9 border-gray-500 border-2 rounded-lg bg-white hover:bg-gray-200 transition-colors"
                     onChange={setSelectedValue}
+                    defaultValue={"#000000"}
                 />
             );
         default:
@@ -64,6 +67,7 @@ const ConditionValuePicker = (
                     type="text"
                     class="px-2 py-1 border-gray-500 border-2 rounded-lg bg-white hover:bg-gray-200 transition-colors"
                     onChange={setSelectedValue}
+                    defaultValue=""
                 />
             );
     }
@@ -147,7 +151,7 @@ export default function ConditionPicker(props: IConditionPickerProps) {
                 condition.id === parseInt(target.id)
                     ? {
                         ...condition,
-                        value: value,
+                        value: value.toString(),
                     }
                     : condition
             )),

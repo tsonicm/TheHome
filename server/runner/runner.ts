@@ -10,7 +10,7 @@ export default class AutomationRunner {
         this.automationsList = automationList;
     }
 
-    async exec() {
+    exec = async () => {
         console.log("Running automations");
         const now = new Date();
 
@@ -83,7 +83,7 @@ export default class AutomationRunner {
                 console.log("Updated device", data);
             });
         });
-    }
+    };
 
     async run() {
         try {

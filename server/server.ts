@@ -35,6 +35,6 @@ const automationRunner = new AutomationRunner([]);
 automationRunner.run();
 
 // Run automations every minute
-setInterval(automationRunner.run, 1000 * 60); // 1 minute
+setInterval(automationRunner.run.bind(automationRunner), 1000 * 60); // 1 minute
 
 await app.listen({ port: PORT });
